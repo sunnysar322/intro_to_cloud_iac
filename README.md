@@ -21,7 +21,7 @@ This Terraform module creates the following resources:
 - An [IAM role](terraform/role.tf) for the Lambda function with the necessary permissions to access DynamoDB.
 - An [API Gateway REST API](terraform/api_gateway.tf) named `"{project_name}-hello-world-api"` with a resource and method for the "/hello" endpoint.
 - An [S3 bucket](terraform/s3.tf) with the correct policies and static site hosting enabled.
--  
+
 ## Instructions
 ### Prerequisites
 
@@ -82,7 +82,7 @@ After you are done testing, make sure to clean up your terraform resources by ru
 terraform destroy
 ```
 
-Make sure your are in the terraform directory and saml2aws logged in in order for this to work. 
+Make sure your are in the terraform directory and have the aws profile configured (or saml2aws logged in) in order for this to work. 
 
 ## Additional Resources
 
