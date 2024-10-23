@@ -1,0 +1,5 @@
+terraform\lambda_function2.zip
+terraform\lambda_function1.zip
+terraform\terraform.tfstate
+terraform\.terraform.lock.hcl
+terraform\.terraform

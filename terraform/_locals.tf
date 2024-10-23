@@ -1,3 +1,3 @@
 locals {
-    prefix = "TECDP-Demo-Sunny"
+  prefix = "TECDP-Demo-Sunny"
 }

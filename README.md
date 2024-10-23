@@ -5,8 +5,10 @@ This demo will be aimed for beginners to AWS development to deploy their first s
 ## Instructions
 ### Prerequisites
 
-- Install Terraform
+- Install [Terraform](https://developer.hashicorp.com/terraform/install)
 - Have an AWS Account ready to use (personal or A Cloud Guru Sandbox recommended)
+
+Confrim you have both by running `terraform --version` and `aws --version`
 
 ### Configuring your AWS profile
 
