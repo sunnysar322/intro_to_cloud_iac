@@ -5,7 +5,6 @@ terraform {
       version = ">= 4.0, < 6.0.0"
     }
   }
-  backend "s3" {}
 }
 
 provider "aws" {
@@ -14,7 +13,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      "AssetOwner"       = "sunny.sarker@evernorth.com"
+      "AssetOwner"  = "sunny.sarker@evernorth.com"
       "Environment" = "Demo"
       # CostCenter       = 
       # ServiceNowBA     = 

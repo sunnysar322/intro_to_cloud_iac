@@ -1,7 +1,7 @@
 // Replace these with your actual API Gateway URLs
 const apiUrl = '${api_url}';
-const getApiUrl = `${apiUrl}/items/`;
-const postApiUrl = `${apiUrl}/items`;
+const getApiUrl = `${api_url}/items/`;
+const postApiUrl = `${api_url}/items`;
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('add-item-form');

@@ -2,19 +2,6 @@
 resource "aws_s3_bucket" "bucket" {
   bucket = "${local.prefix}-bucket"
 }
-
-resource "aws_s3_bucket_website_configuration" "bucket" {
-  bucket = aws_s3_bucket.bucket.id
-
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "error.html"
-  }
-}
-
 # Upload website content to S3
 resource "aws_s3_object" "website_files" {
   for_each = fileset("../website", "*")
@@ -33,12 +20,12 @@ resource "aws_s3_object" "website_files" {
   }, split(".", each.value)[length(split(".", each.value)) - 1], "binary/octet-stream")
 
   # Use this to pass in the api url env var
-  content = each.value == "script.js" ? templatefile("../website/script.js.tftpl", {
-    api_url = aws_api_gateway_deployment.myapi.invoke_url
+  content = each.value == "script.js" ? templatefile("../website/script.js", {
+    api_url = aws_api_gateway_deployment.myapi_deployment.invoke_url
   }) : file("../website/${each.value}")
   # need this to detect changes
-  etag = each.value == "script.js" ? md5(templatefile("../website/script.js.tftpl", {
-    api_url = aws_api_gateway_deployment.myapi.invoke_url
+  etag = each.value == "script.js" ? md5(templatefile("../website/script.js", {
+    api_url = aws_api_gateway_deployment.myapi_deployment.invoke_url
   })) : filemd5("../website/${each.value}")
 }
 

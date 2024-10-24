@@ -7,12 +7,12 @@ locals {
 
 data "archive_file" "lambda1_zip" {
   type        = "zip"
-  source_dir  = "../lambda/lambda1"
+  source_dir  = "../lambdas/lambda1"
   output_path = local.lambda1_zip_package
 }
 
 data "archive_file" "lambda2_zip" {
   type        = "zip"
-  source_dir  = "../lambda/lambda2"
+  source_dir  = "../lambdas/lambda2"
   output_path = local.lambda2_zip_package
 }

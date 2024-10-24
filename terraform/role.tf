@@ -38,7 +38,7 @@ resource "aws_iam_role_policy" "lambda_dynamodb_s3" {
           "dynamodb:Scan",
           "dynamodb:Query"
         ]
-        Resource = aws_dynamodb_table.my_table.arn
+        Resource = aws_dynamodb_table.hello_world_table.arn
       },
       {
         Effect = "Allow"
@@ -47,8 +47,8 @@ resource "aws_iam_role_policy" "lambda_dynamodb_s3" {
           "s3:ListBucket"
         ]
         Resource = [
-          aws_s3_bucket.static_site.arn,
-          "${aws_s3_bucket.static_site.arn}/*"
+          aws_s3_bucket.bucket.arn,
+          "${aws_s3_bucket.bucket.arn}/*"
         ]
       }
     ]

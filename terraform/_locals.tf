@@ -1,3 +1,3 @@
 locals {
-  prefix = "TECDP-Demo-Sunny"
+  prefix = "demo-sunny" #NO uppercase letters, will fail
 }
