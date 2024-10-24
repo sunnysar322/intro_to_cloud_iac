@@ -62,13 +62,13 @@ terraform init
 This first command will initalize terraform in your folder.
 
 ```tf
-terraform plan
+terraform plan --out tfplan
 ```
 
 This second command will generate a plan file that will comapre your existing infrasctuctrure in your account to whats being created. 
 
 ```tf
-terraform apply
+terraform apply tfplan
 ```
 
 This last command will apply all of your changes in the plan as long as it is not stale or created too long ago. 

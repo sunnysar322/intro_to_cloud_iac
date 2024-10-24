@@ -5,3 +5,4 @@ terraform/lambda_function1.zip
 terraform/.terraform.lock.hcl
 .gitignore
 terraform/terraform.tfstate.backup
+terraform/tfplan

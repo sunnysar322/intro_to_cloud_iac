@@ -6,7 +6,7 @@ resource "aws_dynamodb_table" "hello_world_table" {
 
   attribute {
     name = "id"
-    type = "S"
+    type = "S" # 'S' stands for String type
   }
   point_in_time_recovery {
     enabled = true
@@ -21,7 +21,9 @@ resource "aws_dynamodb_table_item" "hello_world_item" {
 
   item = <<ITEM
 {
-  "id": {"S": "hello-world"}
+  "id": { "S": "1" },
+  "name": { "S": "Sunny Sarker" },
+  "email": { "S": "sunny.sarker@helloworld.com" }
 }
 ITEM
 }
