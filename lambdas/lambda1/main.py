@@ -17,6 +17,11 @@ def handler(event, context):
         items = response.get('Items', [])
         return {
             'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            },
             'body': json.dumps(items)
         }
 
@@ -28,10 +33,20 @@ def handler(event, context):
         item = response.get('Item', {})
         return {
             'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            },
             'body': json.dumps(item)
         }
 
     return {
         'statusCode': 400,
+        'headers': {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        },
         'body': json.dumps({'error': 'Invalid request'})
     }
