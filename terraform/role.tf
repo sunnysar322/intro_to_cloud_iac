@@ -21,10 +21,13 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
   role       = aws_iam_role.lambda_role.name
 }
 
-resource "aws_iam_role_policy" "lambda_dynamodb_s3" {
-  name = "${local.prefix}-lambda-dynamodb-s3-policy"
-  role = aws_iam_role.lambda_role.id
+resource "aws_iam_role_policy_attachment" "lambda_custom_role" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_dynamodb_s3.arn
+}
 
+resource "aws_iam_policy" "lambda_dynamodb_s3" {
+  name = "${local.prefix}-lambda-dynamodb-s3-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

@@ -1,13 +1,15 @@
-# create the bucket
+# Create the S3 bucket
 resource "aws_s3_bucket" "bucket" {
   bucket = "${local.prefix}-bucket"
 }
+
 # Upload website content to S3
 resource "aws_s3_object" "website_files" {
   for_each = fileset("../website", "*")
 
   bucket = aws_s3_bucket.bucket.id
   key    = each.value
+
   content_type = lookup({
     "html" = "text/html",
     "css"  = "text/css",
@@ -19,16 +21,14 @@ resource "aws_s3_object" "website_files" {
     "svg"  = "image/svg+xml"
   }, split(".", each.value)[length(split(".", each.value)) - 1], "binary/octet-stream")
 
-  # Use this to pass in the api url env var
   content = each.value == "script.js" ? templatefile("../website/script.js", {
     api_url = aws_api_gateway_deployment.myapi_deployment.invoke_url
   }) : file("../website/${each.value}")
-  # need this to detect changes
+
   etag = each.value == "script.js" ? md5(templatefile("../website/script.js", {
     api_url = aws_api_gateway_deployment.myapi_deployment.invoke_url
   })) : filemd5("../website/${each.value}")
 }
-
 # Configure bucket for static website hosting
 resource "aws_s3_bucket_website_configuration" "bucket" {
   bucket = aws_s3_bucket.bucket.id
@@ -77,4 +77,3 @@ output "website_url" {
   value       = aws_s3_bucket_website_configuration.bucket.website_endpoint
   description = "S3 Static Website URL"
 }
-

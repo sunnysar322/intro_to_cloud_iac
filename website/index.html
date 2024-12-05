@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Static Site</title>
+    <title>Item Manager</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>My Static Site</h1>
-        <div class="form-container">
-            <h2>Add New Item</h2>
-            <form id="add-item-form">
-                <input type="text" id="name" placeholder="Name" required>
-                <input type="email" id="email" placeholder="Email" required>
-                <button type="submit">Add Item</button>
-            </form>
-        </div>
-        <div class="result-container">
-            <h2>Item Data</h2>
-            <div id="item-data"></div>
-        </div>
-        <div class="result-container">
-            <h2>API Response</h2>
-            <div id="api-response"></div>
-        </div>
-    </div>
+    <h1>Item Manager</h1>
+
+    <!-- Form for adding new items (POST) -->
+    <form id="add-item-form">
+        <h2>Add Item</h2>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">Add Item</button>
+    </form>
+
+    <!-- Form for searching items by email (GET) -->
+    <form id="search-email-form">
+        <h2>Search by Email</h2>
+        <label for="email-search">Email:</label>
+        <input type="email" id="email-search" name="email" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="api-response"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
