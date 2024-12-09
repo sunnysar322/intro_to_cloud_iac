@@ -13,7 +13,10 @@ terraform {
 
 provider "aws" {
   region  = "us-east-1"
+
   profile = "my-test-account"
+  # COMMENT Above line out and lines beneath back in if using different profile/ saml2aws
+  # profile = "default"
 
   default_tags {
     tags = {
