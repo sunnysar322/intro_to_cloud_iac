@@ -105,7 +105,7 @@ Make sure to replace `{ACCOUNT_NUMBER_HERE}` with your own account number. For t
 
 If you have any environment specific variables, you can also add a variables.tfvars file so that certain variables can only apply to each environment. For example, if you want to keep track of what environment you are in your code, you can set `"environment" = "dev"` and call it with `var.environment` throughout your code. If you want to do this, you also need to call those same varibales in your `_variables.tf` file to be used for the whole module in that folder path. I left the `variables.tfvars` files there but commented out if you would like to try on your own. 
 
-Make sure to also go into the `_providers.tf` file and comment back in backend "s3" {} so that when you run your terraform commands it knows to search in s3. 
+Make sure to also go into the `_providers.tf` file and comment back in backend "s3" {} so that when you run your terraform commands it knows to search in s3. In the same file also set profile to either "default" or "saml" depending how you set up your saml2aws profile. 
 
 ### 3. Running terraform
 In order to deploy this applicaiton. You need to first go into the terraform directory then run the terraform workflow.
