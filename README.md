@@ -13,13 +13,13 @@ The architecture will look like the following:
 
 ![arch_diagram](images/intro_iac.drawio.png) 
 
-### Resources to Build (NEED TO UPDATE)
+### Resources to Build
 This Terraform module creates the following resources:
 
-- A [DynamoDB table](terraform/dynamodb.tf) named `"{project_name}-hello-world-table"`.
-- A [Lambda function](terraform/lambda.tf) named `"{project_name}-hello-world-lambda"` that queries the DynamoDB table to read or write. 
+- A [DynamoDB table](terraform/dynamodb.tf) named `"{project_name}-email-table"`.
+- Two [Lambda functions](terraform/lambda.tf) named `"{project_name}-Lambda1"` and `"{project_name}-Lambda2"` that queries the DynamoDB table to read or write. They wil be associated with different API requests for GET and POST
 - An [IAM role](terraform/role.tf) for the Lambda function with the necessary permissions to access DynamoDB.
-- An [API Gateway REST API](terraform/api_gateway.tf) named `"{project_name}-hello-world-api"` with a resource and method for the "/hello" endpoint.
+- An [API Gateway REST API](terraform/api_gateway.tf) named `"{project_name}-my-api"` with a resource and method for the "/hello" endpoint.
 - An [S3 bucket](terraform/s3.tf) with the correct policies and static site hosting enabled.
 
 ## Instructions
@@ -52,10 +52,13 @@ To verify you can check your `~/.aws/credentials` file in your terminal.
 *Note: if using a acloud guru account these accounts will shut down in a few hours so will need to re run this command if needed*
 
 ### Running terraform
+In order to deploy this applicaiton. You need to first go into the terraform directory then run the terraform workflow.
 
-Here are the commands
+Here are the commands:
 
 ```tf
+cd terraform
+
 terraform init
 ```
 
