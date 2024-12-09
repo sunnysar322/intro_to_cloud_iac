@@ -6,3 +6,4 @@ terraform/.terraform.lock.hcl
 .gitignore
 terraform/terraform.tfstate.backup
 terraform/tfplan
+terraform/config/sdbx/backend.tfvars
