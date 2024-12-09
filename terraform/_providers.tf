@@ -7,6 +7,8 @@ terraform {
       version = ">= 4.0, < 6.0.0"
     }
   }
+  # COMMENT BACK IN IF USING CIGNA account or any other with a tfstate bucket
+  # backend "s3" {}
 }
 
 provider "aws" {
