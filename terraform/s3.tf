@@ -20,13 +20,13 @@ resource "aws_s3_object" "website_files" {
     "gif"  = "image/gif",
     "svg"  = "image/svg+xml"
   }, split(".", each.value)[length(split(".", each.value)) - 1], "binary/octet-stream")
-
+  # passing in the invoke url for API gateway since front end needs to know where to send GET and POST
   content = each.value == "script.js" ? templatefile("../website/script.js", {
-    api_url = aws_api_gateway_deployment.myapi_deployment.invoke_url
+    api_url = aws_api_gateway_stage.api_stage.invoke_url
   }) : file("../website/${each.value}")
 
   etag = each.value == "script.js" ? md5(templatefile("../website/script.js", {
-    api_url = aws_api_gateway_deployment.myapi_deployment.invoke_url
+    api_url = aws_api_gateway_stage.api_stage.invoke_url
   })) : filemd5("../website/${each.value}")
 }
 # Configure bucket for static website hosting
