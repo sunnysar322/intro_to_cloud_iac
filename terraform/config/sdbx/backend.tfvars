@@ -1,0 +1,5 @@
+bucket         = "cigna-tf-state-{ACCOUNT_NUMBER_HERE}"
+key            = "tecdp-training-2024-test/sdbx.tfstate"
+region         = "us-east-1"
+dynamodb_table = "cigna-tf-lock-{ACCOUNT_NUMBER_HERE}"
+profile        = "default"
