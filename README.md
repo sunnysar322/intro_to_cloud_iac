@@ -5,9 +5,11 @@ This demo will be aimed for beginners to AWS development to deploy their first s
 ## Background
 
 ### Introduction
-We are going to build a basic serverless application in AWS using DynamoDB, Lambda, API gateway, and S3 static site hosting. This will be a simple "Hello-World" app where the string is stored in DynamoDB. Once a GET request is made to the API, Lambda will be triggered and run a DynamoDB query to retrieve the "Hello-World" String and return it back to the user. 
+We are going to build a basic serverless application in AWS using DynamoDB, Lambda, API gateway, and S3 static site hosting. 
 
-However, it’s not that simple, we also need to create a role for lambda to use with the correct permissions to access both dynamo and API gateway. We will also setup the DynamoDB table with an item as well as setup all the portions of the API gateway including the stage and deployment. And lastly we will need to create the S3 bucket, add the correct bucket policy and insert the website files.
+This project is a serverless application designed to manage an email list through a simple and user-friendly webpage. It enables users to add their name and email to a database and retrieve stored entries by searching for an email address. The front-end is a static webpage hosted in an S3 bucket, while the back-end leverages AWS services like API Gateway, Lambda, and DynamoDB. Terraform is used to manage the entire infrastructure as code, ensuring scalability and maintainability.
+
+Users can interact with the application through two main features: adding a new email entry via a form that triggers a POST request, and searching for email entries via a GET request. The application supports Cross-Origin Resource Sharing (CORS), allowing seamless communication between the front-end and back-end. This project highlights how serverless technologies can be combined to create a cost-effective and scalable solution for managing simple data workflows.
 
 The architecture will look like the following:
 
@@ -23,7 +25,7 @@ This Terraform module creates the following resources:
 - An [S3 bucket](terraform/s3.tf) with the correct policies and static site hosting enabled.
 
 ## Instructions
-### Prerequisites
+### 1. Prerequisites
 
 - Install [Terraform](https://developer.hashicorp.com/terraform/install)
 - Have an AWS Account ready to use (personal or A Cloud Guru Sandbox recommended for static site hosting)
@@ -32,9 +34,17 @@ This Terraform module creates the following resources:
 
 Confrim you have both by running `terraform --version` and `aws --version`
 
-### Configuring your AWS profile
+#### **If Using Cigna Account and saml2aws:**
 
-Feel free to ignore this step if you have a account to use and either aws cli or saml2aws set up.
+In order to use a cigna account you need the following setps as well:
+
+- Chnage Provider .tf
+- Change terraform commands 
+- install saml2aws
+
+### 2. Configuring your AWS profile
+
+Feel free to ignore this step if you have aws cli or saml2aws set up and have already logged in.
 
 ```sh
 aws configure --profile my-test-account
@@ -51,8 +61,13 @@ To verify you can check your `~/.aws/credentials` file in your terminal.
 
 *Note: if using a acloud guru account these accounts will shut down in a few hours so will need to re run this command if needed*
 
-### Running terraform
+### 3. Running terraform
 In order to deploy this applicaiton. You need to first go into the terraform directory then run the terraform workflow.
+
+I also recommend going into the terraform folder, opening `locals.tf` and updating the name of the prefix to whatever name you would like.
+
+This is so that each resource name will start with this prefix as it is referenced in each terraform resource name. 
+This is so you can easily search and find the sources
 
 Here are the commands:
 
@@ -81,11 +96,11 @@ This last command will apply all of your changes in the plan as long as it is no
 
 ![terraform apply](images/terraform_apply.PNG)
 
-### Testing the application
+### 4. Testing the application
 
 After terraform plan is run, your application is now up and running in your AWS account. If you navigate to the AWS console you can now see your resrouces in Lambda, Dynamo, S3 and API gateway. 
 
-#### Opening the Webpage 
+#### 5. Opening the Webpage 
 
 At the end of your `terraform apply` command, one of the specified outputs should have been the website URL for the deployed application. In our case it is `http://demo-sunny-bucket.s3-website-us-east-1.amazonaws.com/`
 
@@ -95,7 +110,7 @@ The site should look like the following:
 
 If you add a name to the email list, you should see an output at the bottom showing a unique ID for that entry in Dynamo DB.
 
-#### DynamoDB
+#### 6. DynamoDB
 
 To verify the information is in DynamoDB you can either search that email in the below section or check Dynamo DB yourself. If you navigate to the AWS console, go to dynamo db, open tables, click on your table name, and explore table items, you should see the new entry. 
 
@@ -103,7 +118,7 @@ To verify the information is in DynamoDB you can either search that email in the
 
 This shows that the request went successfully to the API gateway endpoint from the front end and triggered the lambda function to write the data into DynamoDB. 
 
-#### Other Resources
+#### 7. Other Resources
 
 If you want to verify all of your other resources were built correctly here is what each console screen should look like
 
@@ -129,7 +144,7 @@ And if you look at the code in each lambda, you will see the code from the `lamb
 This is where all our front end code is hosted and if you go into settings you can see the configurations for static site hosting. 
 
 
-### Cleanup
+### 8. Cleanup
 
 After you are done testing, make sure to clean up your terraform resources by running the destroy command:
 
