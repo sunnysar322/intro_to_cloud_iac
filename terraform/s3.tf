@@ -1,3 +1,6 @@
+# this file creates the s3 bucket, the objects in the bucket through iterating through the website directory, the static site config, and the bucket permissions and policy
+# I also output the url at the end in order for you to easily view it 
+
 # Create the S3 bucket
 resource "aws_s3_bucket" "bucket" {
   bucket = "${local.prefix}-bucket"

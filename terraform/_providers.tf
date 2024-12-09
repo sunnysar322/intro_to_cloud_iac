@@ -1,3 +1,5 @@
+# here we configure terraform and sewt the version as well as the version of the package. Here we also set profile and any default resource tags
+
 terraform {
   required_version = ">= 1.3.0, < 2.0.0"
   required_providers {

@@ -1,3 +1,6 @@
+# with data blocks, we can call existing resources locally and in AWS
+# with the archive files we can zip the folders and upload it to our lanmbdas via the lambda terraform code.
+
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}

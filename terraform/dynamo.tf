@@ -1,6 +1,8 @@
+# we create a dynamo DB table and initialize a table item to start off with. 
+
 # Create a DynamoDB table
 resource "aws_dynamodb_table" "hello_world_table" {
-  name         = "${local.prefix}-hello-world-table"
+  name         = "${local.prefix}-email-table"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "id"
 

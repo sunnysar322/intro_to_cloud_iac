@@ -1,6 +1,6 @@
 # API Gateway
 resource "aws_api_gateway_rest_api" "my_api" {
-  name = "my-api"
+  name = "${local.prefix}-my-api"
 }
 
 # /items resource

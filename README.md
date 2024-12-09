@@ -61,8 +61,9 @@ cd terraform
 
 terraform init
 ```
-
 This first command will initalize terraform in your folder.
+
+![terraform init](images/terraform_init.PNG)
 
 ```tf
 terraform plan --out tfplan
@@ -70,20 +71,78 @@ terraform plan --out tfplan
 
 This second command will generate a plan file that will comapre your existing infrasctuctrure in your account to whats being created. 
 
+![terraform plan](images/terraform_plan.PNG)
+
 ```tf
 terraform apply tfplan
 ```
 
 This last command will apply all of your changes in the plan as long as it is not stale or created too long ago. 
 
-### Cleanup
+![terraform apply](images/terraform_apply.PNG)
 
+### Testing the application
+
+After terraform plan is run, your application is now up and running in your AWS account. If you navigate to the AWS console you can now see your resrouces in Lambda, Dynamo, S3 and API gateway. 
+
+#### Opening the Webpage 
+
+At the end of your `terraform apply` command, one of the specified outputs should have been the website URL for the deployed application. In our case it is `http://demo-sunny-bucket.s3-website-us-east-1.amazonaws.com/`
+
+The site should look like the following:
+
+![post](images/website_post.PNG)
+
+If you add a name to the email list, you should see an output at the bottom showing a unique ID for that entry in Dynamo DB.
+
+#### DynamoDB
+
+To verify the information is in DynamoDB you can either search that email in the below section or check Dynamo DB yourself. If you navigate to the AWS console, go to dynamo db, open tables, click on your table name, and explore table items, you should see the new entry. 
+
+![db](images/dynamoDB_after_post.PNG)
+
+This shows that the request went successfully to the API gateway endpoint from the front end and triggered the lambda function to write the data into DynamoDB. 
+
+#### Other Resources
+
+If you want to verify all of your other resources were built correctly here is what each console screen should look like
+
+##### API Gateway
+
+![api](images/api_gateway.PNG)
+
+In this we have our main `/items` route with GET, POST, and OPTIONS enabled. We also need an additonal `{id}` path at the end of items with a GET method to support the POST requests. 
+
+OPTIONS enables Cross origin resource sharing (CORS) so that requests from different domains such as our static site can be handled and accepted. 
+
+##### Lambda
+
+![lambda](images/lambda_list.PNG)
+
+And if you look at the code in each lambda, you will see the code from the `lambdas` folder in this directory have all be uploaded. 
+
+![code](images/lambda_code.PNG)
+
+##### S3
+![s3](images/s3_bucket.PNG)
+
+This is where all our front end code is hosted and if you go into settings you can see the configurations for static site hosting. 
+
+
+### Cleanup
 
 After you are done testing, make sure to clean up your terraform resources by running the destroy command:
 
 ```shell
 terraform destroy
 ```
+You will first be prompted to say yes if you want to delete the resources with a list of resources that will be deleted. 
+
+![terraform destroy](images/terraform_destroy1.PNG)
+
+After this the destroy may run for a few minutes then show the following:
+
+![terraform destroy2](images/terraform_destroy2.PNG)
 
 Make sure your are in the terraform directory and have the aws profile configured (or saml2aws logged in) in order for this to work. 
 

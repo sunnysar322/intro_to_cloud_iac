@@ -1,4 +1,5 @@
 # create the iam role, create a role policy, and then perform the role policy attachment
+# we add permissions to the lambda to create logs, and query dynamo
 resource "aws_iam_role" "lambda_role" {
   name = "${local.prefix}-lambda-role"
 

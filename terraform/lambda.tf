@@ -1,3 +1,6 @@
+# we create the log group for lambda, the function by pointion to the main python file, and create ther api gateway permission
+# we do this twice  for both lambdas, 1 is for GET 2 is for POST
+
 resource "aws_cloudwatch_log_group" "lambda1_logs" {
   name              = "/aws/lambda/${local.prefix}-LambdaFunction1"
   retention_in_days = 14
