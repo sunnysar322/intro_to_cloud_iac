@@ -38,12 +38,23 @@ Confrim you have both by running `terraform --version` and `aws --version`
 
 In order to use a cigna account you need the following setps as well:
 
+- Access to an AWS account (if dont have access already)
+  - request the needed GG
+  - make sure this is at least a DEVELOPER role with write access
+  - If you are in  Health Services/ESI, you need to also request a second global group that starts with APP_{gg_name} in Users & Groups for Health Services in Saviynt
+    - More information [here](https://confluence.sys.cigna.com/pages/viewpage.action?pageId=332050198)
+  - You can verify by opening Okta and searching "AWS" to see if that option pops up. Once it does you can go to the log in screen and find that account and role.
+- Setup [saml2aws](https://github.sys.cigna.com/cigna/okta-auto-federation/wiki)
+  - Run `saml2aws --help` to verify the install
+  - Set the saml2aws profile to default during setup
+
+You will also need to add in t
 - Chnage Provider .tf
 - Change terraform commands 
-- install saml2aws
 
-### 2. Configuring your AWS profile
+### 2. Configuring your AWS profile or saml2aws (cigna account)
 
+#### AWS Configure:
 Feel free to ignore this step if you have aws cli or saml2aws set up and have already logged in.
 
 ```sh
@@ -61,6 +72,41 @@ To verify you can check your `~/.aws/credentials` file in your terminal.
 
 *Note: if using a acloud guru account these accounts will shut down in a few hours so will need to re run this command if needed*
 
+#### saml2aws (cigna account):
+
+##### Step 1: saml2aws configure (if you havent already)
+Before running any terraform commands, make sure to run `saml2aws configure` and sign in accordingly. For saml2aws to work with this project, make sure to set profile to `default`.
+
+You can always rerun saml2aws configure to set the profile back to default when necessary, as that is usually needed to use the AWS CLI for other work. 
+
+##### Step 2: saml2aws login
+After that, `saml2aws login` and authenticate as needed. This adds the needed aws credentials into your default aws profile for terraform to reference. 
+
+##### Step 3: Setup Backend.tfvars in Config
+in `terraform/config` you normally create a folder corresponding to the environment you want to push too (sdbx, dev, test, prod, etc.)
+
+I have this folder created but everything in the file is commented out, simply comment it back in.
+
+In this case, we will create a folder called `sdbx`.
+
+In this folder, create a file called `backend.tfvars` and make that file look like the following:
+
+```terraform
+bucket         = "cigna-tf-state-{ACCOUNT_NUMBER_HERE}"
+key            = "tecdp-training-2024-test/sdbx.tfstate"
+region         = "us-east-1"
+dynamodb_table = "cigna-tf-lock-{ACCOUNT_NUMBER_HERE}"
+profile        = "default"
+```
+
+Every Cigna account has a tfstate bucket corresponding to that account. If we werent using a cigna account we would simply have the tfstate locally in our current directory, but this enables better collaboration and tracking if this is an account for a large team. 
+
+Make sure to replace `{ACCOUNT_NUMBER_HERE}` with your own account number. For this demo I am using a sandbox account so am calling my key as sdbx.tfstate but you can match it with dev or whatever account type prefix you have if you would like but not necessary. 
+
+If you have any environment specific variables, you can also add a variables.tfvars file so that certain variables can only apply to each environment. For example, if you want to keep track of what environment you are in your code, you can set `"environment" = "dev"` and call it with `var.environment` throughout your code. If you want to do this, you also need to call those same varibales in your `_variables.tf` file to be used for the whole module in that folder path. I left the `variables.tfvars` files there but commented out if you would like to try on your own. 
+
+Make sure to also go into the `_providers.tf` file and comment back in backend "s3" {} so that when you run your terraform commands it knows to search in s3. 
+
 ### 3. Running terraform
 In order to deploy this applicaiton. You need to first go into the terraform directory then run the terraform workflow.
 
@@ -70,6 +116,8 @@ This is so that each resource name will start with this prefix as it is referenc
 This is so you can easily search and find the sources
 
 Here are the commands:
+
+#### If using aws configure:
 
 ```tf
 cd terraform
@@ -95,6 +143,19 @@ terraform apply tfplan
 This last command will apply all of your changes in the plan as long as it is not stale or created too long ago. 
 
 ![terraform apply](images/terraform_apply.PNG)
+
+#### if using cigna account with saml2aws:
+
+Similar to the steps above but with some adjustments:
+
+```
+cd terraform
+terraform init -backend-config config/sdbx/backend.tfvars
+terraform plan --var-file config/sdbx/variables.tfvars --out tfplan
+terraform apply tfplan
+```
+
+The most important step is the change in the terraform init command. Plan is only different if you are using the var file that is environment specific. 
 
 ### 4. Testing the application
 
