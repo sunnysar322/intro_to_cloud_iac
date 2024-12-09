@@ -45,9 +45,11 @@ def build_response(status_code, body):
     return {
         'statusCode': status_code,
         'headers': {
+            'Access-Control-Allow-Credentials': 'true',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST,OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type'
+            'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+            'Access-Control-Allow-Methods': 'GET,OPTIONS,POST',
+            'Content-Type': 'application/json'
         },
         'body': json.dumps(body)
     }
