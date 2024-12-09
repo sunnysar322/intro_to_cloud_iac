@@ -45,8 +45,9 @@ def handler(event, context):
         'statusCode': 400,
         'headers': {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type'
+            'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+            'Access-Control-Allow-Methods': 'GET,OPTIONS,POST',
+            'Content-Type': 'application/json'
         },
         'body': json.dumps({'error': 'Invalid request'})
     }
