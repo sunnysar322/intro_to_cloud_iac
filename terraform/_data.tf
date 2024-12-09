@@ -1,5 +1,7 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_region" "current" {}
+
 locals {
   lambda1_zip_package = "${path.module}/lambda_function1.zip"
   lambda2_zip_package = "${path.module}/lambda_function2.zip"
