@@ -1,8 +1,6 @@
 # Introduction to Cloud - IaC Demo
 
-This demo will be aimed for beginners to AWS development to deploy their first serverless application into AWS using terraform.
-
-## Table of Contents
+This demo is aimed at beginners to AWS development, guiding them to deploy their first serverless application into AWS using Terraform.
 
 ## Table of Contents
 
@@ -15,7 +13,7 @@ This demo will be aimed for beginners to AWS development to deploy their first s
       - [AWS Configure](#aws-configure)
       - [saml2aws (Cigna account)](#saml2aws-cigna-account)
    3. [Running terraform](#3-running-terraform)
-      - [If using aws configure](#if-using-aws-configure)
+      - [If using AWS Configure](#if-using-aws-configure)
       - [If using Cigna account with saml2aws](#if-using-cigna-account-with-saml2aws)
    4. [Testing the application](#4-testing-the-application)
       - [Opening the Webpage](#opening-the-webpage)
@@ -34,46 +32,45 @@ This demo will be aimed for beginners to AWS development to deploy their first s
 ## Background
 
 ### Introduction
-We are going to build a basic serverless application in AWS using DynamoDB, Lambda, API gateway, and S3 static site hosting. 
+This project involves building a basic serverless application in AWS using DynamoDB, Lambda, API Gateway, and S3 static site hosting.
 
-This project is a serverless application designed to manage an email list through a simple and user-friendly webpage. It enables users to add their name and email to a database and retrieve stored entries by searching for an email address. The front-end is a static webpage hosted in an S3 bucket, while the back-end leverages AWS services like API Gateway, Lambda, and DynamoDB. Terraform is used to manage the entire infrastructure as code, ensuring scalability and maintainability.
+The application is designed to manage an email list through a simple and user-friendly webpage. It enables users to add their name and email to a database and retrieve stored entries by searching for an email address. The front-end is a static webpage hosted in an S3 bucket, while the back-end leverages AWS services like API Gateway, Lambda, and DynamoDB. Terraform is used to manage the entire infrastructure as code, ensuring scalability and maintainability.
 
-Users can interact with the application through two main features: adding a new email entry via a form that triggers a POST request, and searching for email entries via a GET request. The application supports Cross-Origin Resource Sharing (CORS), allowing seamless communication between the front-end and back-end. This project highlights how serverless technologies can be combined to create a cost-effective and scalable solution for managing simple data workflows.
+The application supports two main features: adding a new email entry via a form (POST request) and searching for email entries by email (GET request). Cross-Origin Resource Sharing (CORS) is implemented to allow seamless communication between the front-end and back-end. The project demonstrates how serverless technologies can provide a cost-effective and scalable solution for managing simple data workflows.
 
 The architecture will look like the following:
 
-![arch_diagram](images/intro_iac.drawio.png) 
+![arch_diagram](images/intro_iac.drawio.png)
 
 ### Resources to Build
 This Terraform module creates the following resources:
 
 - A [DynamoDB table](terraform/dynamodb.tf) named `"{project_name}-email-table"`.
-- Two [Lambda functions](terraform/lambda.tf) named `"{project_name}-Lambda1"` and `"{project_name}-Lambda2"` that queries the DynamoDB table to read or write. They wil be associated with different API requests for GET and POST
-- An [IAM role](terraform/role.tf) for the Lambda function with the necessary permissions to access DynamoDB.
-- An [API Gateway REST API](terraform/api_gateway.tf) named `"{project_name}-my-api"` with a resource and method for the "/hello" endpoint.
-- An [S3 bucket](terraform/s3.tf) with the correct policies and static site hosting enabled.
+- Two [Lambda functions](terraform/lambda.tf) named `"{project_name}-Lambda1"` and `"{project_name}-Lambda2"`, for querying the DynamoDB table to read (GET) or write (POST).
+- An [IAM role](terraform/role.tf) with permissions for Lambda to access DynamoDB.
+- An [API Gateway REST API](terraform/api_gateway.tf) named `"{project_name}-my-api"` with a resource and methods for the `/items` endpoint.
+- An [S3 bucket](terraform/s3.tf) with the necessary policies for static site hosting.
 
 ## Instructions
+
 ### 1. Prerequisites
 
-- Install [Terraform](https://developer.hashicorp.com/terraform/install)
-- Have an AWS Account ready to use (personal or A Cloud Guru Sandbox recommended for static site hosting)
-  - Install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-  - If you have an account ready to use, have used saml2aws before, and have it set up, you can use that instead as well by setting profile in the next step to either `saml` or `default` depending on how you set it up with `saml2aws configure` or `aws configure`
-
-Confrim you have both by running `terraform --version` and `aws --version`
+- Install [Terraform](https://developer.hashicorp.com/terraform/install).
+- Have an AWS account ready to use (a personal account or a Cloud Guru Sandbox account is recommended for static site hosting).
+- Install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+- Confirm the installations by running:
+    - `terraform --version`
+    - `aws --version`
 
 #### **If Using Cigna Account and saml2aws:**
 
 In order to use a cigna account you need the following setps as well:
 
-- Access to an AWS account (if dont have access already)
-  - request the needed GG
-  - make sure this is at least a DEVELOPER role with write access
+- Ensure access to an AWS account with at least developer-level permissions. Request the necessary Global Groups (GGs) if not already granted.
   - If you are in  Health Services/ESI, you need to also request a second global group that starts with APP_{gg_name} in Users & Groups for Health Services in Saviynt
     - More information [here](https://confluence.sys.cigna.com/pages/viewpage.action?pageId=332050198)
   - You can verify by opening Okta and searching "AWS" to see if that option pops up. Once it does you can go to the log in screen and find that account and role.
-- Setup [saml2aws](https://github.sys.cigna.com/cigna/okta-auto-federation/wiki)
+- Install [saml2aws](https://github.sys.cigna.com/cigna/okta-auto-federation/wiki)
   - Run `saml2aws --help` to verify the install
   - Set the saml2aws profile to default during setup
 
@@ -86,12 +83,10 @@ Feel free to ignore this step if you have aws cli or saml2aws set up and have al
 aws configure --profile my-test-account
 ```
 
-When prompted pass in the following:
-
-- AWS Access Key ID: Your personal account access key ID.
-- AWS Secret Access Key: Your personal account secret access key.
-- Default region: Choose the region you want to use (e.g., us-east-1).
-- Default output format: Choose json or text, as per your preference.
+When prompted:
+- Enter your AWS Access Key ID and Secret Access Key.
+- Choose your region (e.g., `us-east-1`).
+- Set the output format to `json` or `text`.
 
 To verify you can check your `~/.aws/credentials` file in your terminal.
 
@@ -194,7 +189,7 @@ After terraform plan is run, your application is now up and running in your AWS 
 
 #### 5. Opening the Webpage 
 
-At the end of your `terraform apply` command, one of the specified outputs should have been the website URL for the deployed application. In our case it is `http://demo-sunny-bucket.s3-website-us-east-1.amazonaws.com/`
+The deployed static website URL will be listed as an output in Terraform. Access it in your browser. In our case it is `http://demo-sunny-bucket.s3-website-us-east-1.amazonaws.com/`
 
 The site should look like the following:
 
