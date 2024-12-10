@@ -95,9 +95,7 @@ To verify you can check your `~/.aws/credentials` file in your terminal.
 #### saml2aws (cigna account):
 
 ##### Step 1: saml2aws configure (if you havent already)
-Before running any terraform commands, make sure to run `saml2aws configure` and sign in accordingly. For saml2aws to work with this project, make sure to set profile to `default`.
-
-You can always rerun saml2aws configure to set the profile back to default when necessary, as that is usually needed to use the AWS CLI for other work. 
+Before running any terraform commands, make sure to run `saml2aws configure` and sign in accordingly.
 
 ##### Step 2: saml2aws login
 After that, `saml2aws login` and authenticate as needed. This adds the needed aws credentials into your default aws profile for terraform to reference. 
