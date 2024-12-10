@@ -2,6 +2,35 @@
 
 This demo will be aimed for beginners to AWS development to deploy their first serverless application into AWS using terraform.
 
+## Table of Contents
+
+## Table of Contents
+
+1. [Background](#background)
+   - [Introduction](#introduction)
+   - [Resources to Build](#resources-to-build)
+2. [Instructions](#instructions)
+   1. [Prerequisites](#1-prerequisites)
+   2. [Configuring your AWS profile or saml2aws (Cigna account)](#2-configuring-your-aws-profile-or-saml2aws-cigna-account)
+      - [AWS Configure](#aws-configure)
+      - [saml2aws (Cigna account)](#saml2aws-cigna-account)
+   3. [Running terraform](#3-running-terraform)
+      - [If using aws configure](#if-using-aws-configure)
+      - [If using Cigna account with saml2aws](#if-using-cigna-account-with-saml2aws)
+   4. [Testing the application](#4-testing-the-application)
+      - [Opening the Webpage](#opening-the-webpage)
+      - [DynamoDB](#dynamodb)
+      - [Other Resources](#other-resources)
+         - [API Gateway](#api-gateway)
+         - [Lambda](#lambda)
+         - [S3](#s3)
+   5. [Cleanup](#8-cleanup)
+3. [Additional Resources](#additional-resources)
+   - [AWS](#aws)
+   - [Terraform](#terraform)
+   - [Serverless/Microservices](#serverlessmicroservices)
+   - [DevOps & CI/CD](#devops--cicd)
+
 ## Background
 
 ### Introduction
@@ -48,10 +77,6 @@ In order to use a cigna account you need the following setps as well:
   - Run `saml2aws --help` to verify the install
   - Set the saml2aws profile to default during setup
 
-You will also need to add in t
-- Chnage Provider .tf
-- Change terraform commands 
-
 ### 2. Configuring your AWS profile or saml2aws (cigna account)
 
 #### AWS Configure:
@@ -82,7 +107,7 @@ You can always rerun saml2aws configure to set the profile back to default when 
 ##### Step 2: saml2aws login
 After that, `saml2aws login` and authenticate as needed. This adds the needed aws credentials into your default aws profile for terraform to reference. 
 
-##### Step 3: Setup Backend.tfvars in Config
+##### Step 3: Setup `backend.tfvars` in Config
 in `terraform/config` you normally create a folder corresponding to the environment you want to push too (sdbx, dev, test, prod, etc.)
 
 I have this folder created but everything in the file is commented out, simply comment it back in.
@@ -105,7 +130,13 @@ Make sure to replace `{ACCOUNT_NUMBER_HERE}` with your own account number. For t
 
 If you have any environment specific variables, you can also add a variables.tfvars file so that certain variables can only apply to each environment. For example, if you want to keep track of what environment you are in your code, you can set `"environment" = "dev"` and call it with `var.environment` throughout your code. If you want to do this, you also need to call those same varibales in your `_variables.tf` file to be used for the whole module in that folder path. I left the `variables.tfvars` files there but commented out if you would like to try on your own. 
 
-Make sure to also go into the `_providers.tf` file and comment back in backend "s3" {} so that when you run your terraform commands it knows to search in s3. In the same file also set profile to either "default" or "saml" depending how you set up your saml2aws profile. 
+#### Step 4: Adjust `_providers.tf`
+
+Make sure to also go into the `_providers.tf` file and do the following:
+1. Comment back in `backend "s3" {}`
+    - This is so when that when you run your terraform commands it knows to store tfstate in in s3 
+2. In the same file also set `profile` to either `default` or `saml` depending how you set up your saml2aws profile and which you used to login. 
+    - Also comment out the `profile = my-test-account` as we are using the saml2aws profile to authenticate now
 
 ### 3. Running terraform
 In order to deploy this applicaiton. You need to first go into the terraform directory then run the terraform workflow.
@@ -146,12 +177,12 @@ This last command will apply all of your changes in the plan as long as it is no
 
 #### if using cigna account with saml2aws:
 
-Similar to the steps above but with some adjustments:
+Similar to the steps above but with one adjustment:
 
 ```
 cd terraform
 terraform init -backend-config config/sdbx/backend.tfvars
-terraform plan --var-file config/sdbx/variables.tfvars --out tfplan
+terraform plan --out tfplan
 terraform apply tfplan
 ```
 

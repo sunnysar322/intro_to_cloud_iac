@@ -47,7 +47,7 @@ This folder contains the source code and deployment packages for the Lambda func
     }
   }
 
-### 1. `POST /items` - Add New Items
+### 2. `POST /items` - Add New Items
 
 - **Lambda Function**: `LambdaFunction2`
 - **Purpose**:
